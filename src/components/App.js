@@ -9,12 +9,7 @@ import { exampleBook } from '../data/exampleBook';
 export const App = () => {
   const [contacts, setContacts] = useState(() => {
     const book = localStorage.getItem('phonebook');
-    if (book) {
-      const parsePhonebook = JSON.parse(book);
-      return parsePhonebook
-    } else {
-      return exampleBook
-    }
+    return (JSON.parse(book) || exampleBook)
   });  
 
   const [filter, setFilter] = useState('')
@@ -26,11 +21,11 @@ export const App = () => {
   const addContact = (userData) => {
     let isExist = contacts.find((item) => item.name === userData.name)
     if (isExist) {
-        alert(`${userData.name} is already in contacts`);
-    } else {
-      const newUser = { ...userData, id: nanoid() };
-      setContacts(prevstate => [...prevstate, newUser])
+      return alert(`${userData.name} is already in contacts`);
     }
+    const newUser = { ...userData, id: nanoid() };
+    setContacts(prevstate => [...prevstate, newUser])
+    
   };
 
   const deleteContacts = (id) => {
@@ -44,13 +39,7 @@ export const App = () => {
     setFilter(value)
   };
 
-  const filterContact = (name, filter) => {
-    let nameLow = name.toLocaleLowerCase();
-    let filterLow = filter.toLocaleLowerCase();
-    return (nameLow.indexOf(filterLow) >= 0)
-  };
-
-  const contactSeach = contacts.filter((user) => filterContact(user.name, filter));
+  const contactSeach = contacts.filter((user) => user.name.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div className={css.phonebook}>
