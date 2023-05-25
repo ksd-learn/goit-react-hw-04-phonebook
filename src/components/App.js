@@ -30,8 +30,7 @@ export const App = () => {
 
   const deleteContacts = (id) => {
     setContacts(prevstate => { 
-      const newState = prevstate.filter((user) => user.id !== id)
-      return newState
+      return prevstate.filter((user) => user.id !== id)
     })
   };
                                               //запись в state--filter значения input (event.target.value)
